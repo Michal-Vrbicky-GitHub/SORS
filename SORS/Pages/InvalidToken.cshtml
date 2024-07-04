@@ -1,0 +1,25 @@
+﻿@page
+@model SORS.Pages.InvalidTokenModel
+@{
+    ViewData["Title"] = "Invalid API Token";
+}
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #E0E0E0;
+            text-align: center;
+        }
+
+        .message {
+            background-color: #FFF;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+    </style>
+    <div class="message">
+        <h2>@ViewData["Title"]</h2>
+        <p>Please contact the administrator.</p>
+    </div>

@@ -1,0 +1,67 @@
+﻿@page
+@model SORS.Pages.StationTokenManagementModel
+@{
+    ViewData["Title"] = "Station Token Managementwut";
+}
+
+<h1>Station Token Management</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Station Name</th>
+            <th>Token</th>
+            <th>Expiry Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var station in Model.Stations)
+        {
+            <tr>
+                <td>@station.Name</td>
+                <td>@station.Token</td>
+                <td>@(station.TokenExpiry?.ToString("yyyy-MM-dd") ?? "N/A")</td>
+                <td>
+                    <form method="post" asp-page-handler="GenerateToken" asp-route-stationId="@station.StationID" class="d-inline">
+                        <button type="submit" class="btn btn-primary">Generate New Token</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editStationModal-@station.StationID">Edit</button>
+                    <form method="post" asp-page-handler="ClearToken" asp-route-stationId="@station.StationID" class="d-inline">
+                        <button type="submit" class="btn btn-danger">Clear Token</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@foreach (var station in Model.Stations)
+{
+    <div class="modal fade" id="editStationModal-@station.StationID" tabindex="-1" aria-labelledby="editStationModalLabel-@station.StationID" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editStationModalLabel-@station.StationID">Edit Station @station.Name</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" asp-page-handler="EditToken" asp-route-stationId="@station.StationID">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="editToken-@station.StationID">Token:</label>
+                            <input type="text" id="editToken-@station.StationID" name="newToken" class="form-control" value="@station.Token" required />
+                        </div>
+                    <div class="form-group">
+                        <label for="editExpiryDate-@station.StationID">Expiry Date:</label>
+                        <input type="date" id="editExpiryDate-@station.StationID" name="newExpiryDate" class="form-control" value="@(station.TokenExpiry.HasValue ? station.TokenExpiry.Value.ToString("yyyy-MM-dd") : "")" required />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}

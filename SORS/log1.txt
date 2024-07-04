@@ -1,0 +1,51 @@
+Time: 04.07.2024 17:56:19
+Error sending email to megakaktus6d@seznam.cz
+Subject: Alert for Station 12
+Body: No report received from 6541, station 12 in the last 5 minutes.
+Exception: System.Net.Mail.SmtpException: Failure sending mail.
+ ---> System.Net.Sockets.SocketException (10061): Nemohlo být vytvořeno žádné připojení, protože cílový počítač je aktivně odmítl.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.TaskToApm.End(IAsyncResult asyncResult)
+   at System.Net.Sockets.TcpClient.EndConnect(IAsyncResult asyncResult)
+   at System.Net.Mail.SmtpConnection.ConnectAndHandshakeAsyncResult.InitializeConnectionCallback(IAsyncResult result)
+--- End of stack trace from previous location ---
+   at System.Net.Mail.SmtpClient.ConnectCallback(IAsyncResult result)
+   --- End of inner exception stack trace ---
+   at SORS.Services.EmailSender.SendEmailAsync(String to, String subject, String body) in D:\dlouhyyy\gytvyhub\SORS, ze zálohy SORS se pojebal 404 AAA\Vypatlanej github, neprojevujou se mi změny na testu!\SORS\SORS\Services\EmailSender.cs:line 51
+
+Time: 04.07.2024 17:57:18
+Invalid token for Station ID 3.
+JSON content:
+{"StationId":3,"TimeStamp":"2024-07-04T17:57:18.4005179+02:00","Value":32,"Id":"47cd662b-f9ab-45b6-8af0-9f4f1d3f4f0a","Token":"ChangeToRealToken"}
+
+Time: 04.07.2024 17:57:28
+Invalid token for Station ID 4.
+JSON content:
+{"StationId":4,"TimeStamp":"2024-07-04T17:57:28.6002731+02:00","Value":35,"Id":"84846448-a859-4a8b-b47f-33cf493cf042","Token":"ChangeToRealToken"}
+
+Time: 04.07.2024 17:57:38
+Invalid token for Station ID 4.
+JSON content:
+{"StationId":4,"TimeStamp":"2024-06-30T00:21:34","Value":17,"Id":"018e95b9-b737-4a7b-aa75-7651f9bbf0f3","Token":"ChangeToRealToken"}
+
+Time: 04.07.2024 17:58:08
+Error sending email to megakaktus6d@seznam.cz
+Subject: Alert for Station 12
+Body: No report received from 6541, station 12 in the last 5 minutes.
+Exception: System.Net.Mail.SmtpException: Failure sending mail.
+ ---> System.Net.Sockets.SocketException (10061): Nemohlo být vytvořeno žádné připojení, protože cílový počítač je aktivně odmítl.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.TaskToApm.End(IAsyncResult asyncResult)
+   at System.Net.Sockets.TcpClient.EndConnect(IAsyncResult asyncResult)
+   at System.Net.Mail.SmtpConnection.ConnectAndHandshakeAsyncResult.InitializeConnectionCallback(IAsyncResult result)
+--- End of stack trace from previous location ---
+   at System.Net.Mail.SmtpClient.ConnectCallback(IAsyncResult result)
+   --- End of inner exception stack trace ---
+   at SORS.Services.EmailSender.SendEmailAsync(String to, String subject, String body) in D:\dlouhyyy\gytvyhub\SORS, ze zálohy SORS se pojebal 404 AAA\Vypatlanej github, neprojevujou se mi změny na testu!\SORS\SORS\Services\EmailSender.cs:line 51
+

@@ -1,0 +1,57 @@
+﻿@page
+@model SORS.Pages.StationComparisonModel
+@{
+    ViewData["Title"] = "Station Comparison";
+}
+
+<h1>Station Comparison</h1>
+
+<canvas id="stationChart" width="400" height="160"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('stationChart').getContext('2d');
+        var stationNames = @Html.Raw(Json.Serialize(Model.StationNames));
+        var stationValues = @Html.Raw(Json.Serialize(Model.StationValues));
+
+        var stationChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: stationNames,
+                datasets: [{
+                    label: 'Latest Report Value',
+                    data: stationValues,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+            async function fetchData() {
+                try {
+                    let response = await fetch('@Url.Page("/StationComparison", new { handler = "Json" })');
+                    let data = await response.json();
+                    stationChart.data.labels = data.stationNames;
+                    stationChart.data.datasets[0].data = data.stationValues;
+                    stationChart.update();
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            }
+            fetchData();
+            setInterval(fetchData, 8000);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+}
+<style>
+
+</style>

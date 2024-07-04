@@ -1,0 +1,32 @@
+Add-Migration SORS_DB -Context ApplicationDbContext
+Update-Database -Verbose -Context ApplicationDbContext
+
+Add-Migration AddExpiryDateToAspNetUserTokens
+ >:[Otevřete Visual Studio.\:<
+Vyberte Build > Rebuild Solution.
+rozjebalo se to AAAAAAAAAAAAAAAAAAA:
+In Visual Studio, go to Build > Clean Solution and then Build > Rebuild Solution.
+
+Remove-Migration SORS_DB
+
+
+
+Install-Package Microsoft.EntityFrameworkCore.SqlServer
+Install-Package Microsoft.EntityFrameworkCore.Tools
+Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+Install-Package Swashbuckle.AspNetCore
+
+
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet aspnet-codegenerator identity -dc ApplicationDbContext --files "Account.Register;Account.Login;Account.Logout"
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Install-Package Microsoft.VisualStudio.Web.CodeGeneration.Design -Version 7.0.4
+Install-Package Microsoft.EntityFrameworkCore.Design -Version 7.0.4
+ NU1605: Upozornění jako chyba: Zjistil se downgrade balíčku: Microsoft.EntityFrameworkCore.Design z 7.0.11 na 7.0.4. Pokud chcete vybrat jinou verzi, odkazuj
+te na balíček přímo z projektu. 
+
+***
+Install-Package Hangfire -Version 1.7.31
+Install-Package Hangfire.AspNetCore -Version 1.7.31
+Install-Package Hangfire.SqlServer -Version 1.7.31

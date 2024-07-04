@@ -1,0 +1,9 @@
+﻿.image-container {
+	height: 21vh;
+}
+
+	.image-container img {
+		max-height: 100%;
+		width: auto;
+	}
+

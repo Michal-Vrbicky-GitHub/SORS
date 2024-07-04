@@ -1,0 +1,97 @@
+﻿@page
+@model SORS.Pages.LatestReportsModel
+@{
+    ViewData["Title"] = "LatestReports";
+}
+
+<h2>Reports log</h2>
+<a asp-page="/Reports">All Reports</a>
+<br />
+<label>
+    <input type="checkbox" id="autoRefresh" checked />
+    Auto-refresh every 5 seconds
+</label>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Station ID</th>
+            <th>Name</th>
+            <th>Time</th>
+            <th>Value</th>
+            <th>Lvl Min</th>
+            <th>Lvl Max</th>
+        </tr>
+    </thead>
+    <tbody id="reportTableBody">
+        @foreach (var report in Model.Reports)
+        {
+            <tr>
+                <td>
+                    <div style="width: 20px; height: 20px; background-color:
+                        @(report.Value < report.LvlMin ? "red" : report.Value > report.LvlMax ? "blue" : "green");">
+                    </div>
+                </td>
+                <td>@report.StationId</td>
+                <td>@report.StationName</td>
+                <td>@report.TimeStamp</td>
+                <td>@report.Value</td>
+                <td>@report.LvlMin</td>
+                <td>@report.LvlMax</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<!--Snímek obrazovky (521960).png-->
+<div id="loadMoreContainer"></div>
+@section Scripts {
+    <script>
+        function autoRefresh() {
+            if (document.getElementById('autoRefresh').checked) {
+                saveScrollPosition();
+                window.location.reload();
+            }
+        }
+        /*
+        document.getElementById('loadMoreBtn').addEventListener('click', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            let pageSize = parseInt(urlParams.get('pageSize')) || 10;
+            pageSize += 10;
+            urlParams.set('pageSize', pageSize);
+            window.location.search = urlParams.toString();
+        });*/
+
+        setInterval(autoRefresh, 5000);
+
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            restoreScrollPosition();
+            const urlParams = new URLSearchParams(window.location.search);
+            const pageSize = parseInt(urlParams.get('pageSize')) || 10;
+            const totalReports = @Model.TotalReports;
+
+            if (pageSize >= totalReports) {
+                document.getElementById('loadMoreContainer').innerHTML = `<p>No more reports. Total reports: ${totalReports}</p>`;
+            } else {
+                document.getElementById('loadMoreContainer').innerHTML = `<button id="loadMoreBtn" class="btn btn-primary">Load More</button>`;
+                document.getElementById('loadMoreBtn').addEventListener('click', () => {
+                    saveScrollPosition();
+                    urlParams.set('pageSize', pageSize + 10);
+                    window.location.search = urlParams.toString();
+                });
+            }
+        });
+
+        function saveScrollPosition() {
+            sessionStorage.setItem('scrollPosition', window.scrollY);
+        }
+
+        function restoreScrollPosition() {
+            const scrollPosition = sessionStorage.getItem('scrollPosition');
+            if (scrollPosition !== null) {
+                window.scrollTo(0, parseFloat(scrollPosition));
+            }
+        }
+    </script>
+}

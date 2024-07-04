@@ -1,0 +1,19 @@
+Time: 04.07.2024 19:58:41
+Error sending email to AAAAAAAAAAAAAAAAA@AAAAA.AA
+Subject: Alert for Station dfhgah
+Body: Station 7 reported values over range during the last 240 minutes.
+Station is on dfhgah, range is 30 to 71
+Exception: System.Net.Mail.SmtpException: Failure sending mail.
+ ---> System.Net.Sockets.SocketException (10061): Nemohlo být vytvořeno žádné připojení, protože cílový počítač je aktivně odmítl.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.TaskToApm.End(IAsyncResult asyncResult)
+   at System.Net.Sockets.TcpClient.EndConnect(IAsyncResult asyncResult)
+   at System.Net.Mail.SmtpConnection.ConnectAndHandshakeAsyncResult.InitializeConnectionCallback(IAsyncResult result)
+--- End of stack trace from previous location ---
+   at System.Net.Mail.SmtpClient.ConnectCallback(IAsyncResult result)
+   --- End of inner exception stack trace ---
+   at SORS.Services.EmailSender.SendEmailAsync(String to, String subject, String body) in D:\dlouhyyy\gytvyhub\SORS, ze zálohy SORS se pojebal 404 AAA\gitver\SORS\SORS\Services\EmailSender.cs:line 51
+

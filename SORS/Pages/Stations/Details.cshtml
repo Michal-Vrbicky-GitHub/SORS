@@ -1,0 +1,68 @@
+﻿@page
+@model SORS.Pages.Stations.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Station @Model.Station.StationID</h4>
+        <hr />
+        <dl class="row">
+            <dt class= "col-sm-4" >
+				@Html.DisplayNameFor(model => model.Station.Name)
+			</dt >
+			<dd class= "col-sm-8" >
+				@Html.DisplayFor(model => model.Station.Name)
+			</dd >
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Station.LvlMin)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Station.LvlMin)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Station.LvlMax)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Station.LvlMax)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Station.AlertDelay)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Station.AlertDelay)
+            </dd>
+        </dl>
+    </div>
+    <div class="col-md-6">
+        <h4>Alert email recipients</h4>
+        <hr />
+        <table class="table table-bordered table-striped">
+            <thead><!--
+                <tr>
+                    <th>Email</th>
+                </tr>-->
+            </thead>
+            <tbody>
+                @if (Model.Station.AlertEmails != null)
+                {
+                    foreach (var email in Model.Station.AlertEmails)
+                    {
+                        <tr>
+                            <td>@email.Email</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Station?.StationID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

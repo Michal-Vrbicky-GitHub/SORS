@@ -1,0 +1,80 @@
+﻿@page
+@model SORS.Pages.StationGraphModel
+@{
+    ViewData["Title"] = "Station Graph";
+}
+
+<h1>Station Graph</h1>
+
+<div>
+    <form method="get">
+        <label for="stationId">Enter Station ID:</label>
+        <input type="number" id="stationId" name="stationId" value="@Model.StationId" />
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div style="color:red">@Model.ErrorMessage</div>
+}
+
+@if (Model.Timestamps != null && Model.Timestamps.Count > 0)
+{
+    <canvas id="stationChart" width="400" height="160"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.0"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('stationChart').getContext('2d');
+            var timestamps = @Html.Raw(Json.Serialize(Model.Timestamps));
+            var values = @Html.Raw(Json.Serialize(Model.StationValues));
+
+            console.log('Timestamps:', timestamps);
+            console.log('Values:', values);
+
+            var stationChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timestamps,
+                    datasets: [{
+                        label: 'Values',
+                        data: values,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'minute'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Timestamp'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Values'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}
+else
+{
+    <div>No data available for the selected station.</div>
+}

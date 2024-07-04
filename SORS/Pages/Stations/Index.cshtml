@@ -1,0 +1,95 @@
+﻿@page
+@model SORS.Pages.Stations.IndexModel
+
+@{
+	ViewData["Title"] = "Stations";
+}
+
+<h1>Stations list</h1>
+
+<p>
+	<form asp-page="Create" method="get">
+		<button type="submit" class="btn btn-success">Create New</button>
+	</form>
+</p>
+
+<form method="get" class="form-inline">
+	<div class="input-group mb-2">
+		<input type="text" name="SearchString" value="@Model.CurrentFilter" class="form-control" placeholder="Search by name">
+		<div class="input-group-append">
+			<button type="submit" class="btn btn-danger" onclick="clearSearch()">&#10006;</button>
+		</div>
+		<div class="input-group-append">
+			<button type="submit" class="btn btn-primary">Search</button>
+		</div>
+	</div>
+</form>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Station[0].Name)
+			</th>
+			<th>
+				ID
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Station[0].LvlMin)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Station[0].LvlMax)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Station[0].AlertDelay)
+			</th>
+			<th>
+				Details | Edit | Delete
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+@foreach (var item in Model.Station) {
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Name)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.StationID)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.LvlMin)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.LvlMax)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.AlertDelay)
+			</td>
+			<td>
+				<form asp-page="./Details" method="get" class="d-inline-block">
+					<input type="hidden" name="id" value="@item.StationID" />
+					<button type="submit" class="btn btn-primary me-2">Details</button>
+				</form>
+				<form asp-page="./Edit" method="get" class="d-inline-block">
+					<input type="hidden" name="id" value="@item.StationID" />
+					<button type="submit" class="btn btn-primary me-2">Edit</button>
+				</form>
+				<form asp-page="./Delete" method="get" class="d-inline-block">
+					<input type="hidden" name="id" value="@item.StationID" />
+					<button type="submit" class="btn btn-danger">Delete</button>
+				</form>
+			</td>
+		</tr>
+}
+	</tbody>
+</table>
+@section Scripts {
+    <script>
+        function clearSearch() {
+            document.querySelector('input[name="SearchString"]').value = '';
+            //document.querySelector('form.form-inline').submit();
+        }
+    </script>
+}

@@ -1,0 +1,102 @@
+﻿@page
+@model SORS.Pages.Stations.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Station @Model.Station.StationID</h4>
+<hr />
+<form method="post">
+    <div class="row">
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Station.StationID" />
+            <div class="form-group">
+                <label asp-for="Station.Name" class="control-label"></label>
+                <input asp-for="Station.Name" class="form-control" />
+                <span asp-validation-for="Station.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Station.LvlMin" class="control-label"></label>
+                <input asp-for="Station.LvlMin" class="form-control" />
+                <span asp-validation-for="Station.LvlMin" class="text-danger"></span>
+                @if (Model.ErrorrMSGs[0] != null){
+					<span class="text-danger">@Model.ErrorrMSGs[0]</span>}
+            </div>
+            <div class="form-group">
+                <label asp-for="Station.LvlMax" class="control-label"></label>
+                <input asp-for="Station.LvlMax" class="form-control" />
+                <span asp-validation-for="Station.LvlMax" class="text-danger"></span>
+                @if (Model.ErrorrMSGs[1] != null){
+					<span class="text-danger">@Model.ErrorrMSGs[1]</span>}
+            </div>
+            <div class="form-group">
+                <label asp-for="Station.AlertDelay" class="control-label"></label>
+                <input asp-for="Station.AlertDelay" class="form-control" />
+                <span asp-validation-for="Station.AlertDelay" class="text-danger"></span>
+                @if (Model.ErrorrMSGs[2] != null){
+					<span class="text-danger">@Model.ErrorrMSGs[2]</span>}
+            </div>
+
+			<div class="form-group">
+                <input type="submit" value="Save" class=" btn btn-primary mt-3" />
+			</div>
+		</div>
+
+        <!-- Email Fields -->
+		<div class="col-md-6">
+            <h4>Emails</h4>
+            <div id="emailContainer">
+                <span asp-validation-for="AlertEmails" class="text-danger"></span>
+                @for (int i = 0; i < Model.AlertEmails.Count; i++)
+                {
+                    <div class="input-group mb-3 email-input-group">
+                        <input type="text" class="form-control email-input" name="alertEmail" value="@Model.AlertEmails[i]">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary remove-email" type="button">-</button>
+                        </div>
+                    </div>
+                }
+                <div class="input-group mb-3 email-input-group">
+                    <input type="text" class="form-control email-input" name="alertEmail" placeholder="Enter alert email">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary remove-email" type="button" style="display: none">-</button>
+                        <button class="btn btn-outline-secondary add-email" type="button">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</form>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#emailContainer').on('click', '.add-email', function () {
+                var html = '<div class="input-group mb-3 email-input-group">' +
+                    '<input type="text" class="form-control email-input" name="alertEmail" placeholder="Enter alert email recipient">' +
+                    '<div class="input-group-append">' +
+                    '<button class="btn btn-outline-secondary add-email" type="button">+</button>' +
+                    '<button class="btn btn-outline-secondary remove-email" type="button" style="display: none">-</button>' +
+                    '</div>' +
+                    '</div>';
+                $(this).closest('#emailContainer').append(html);
+                $(this).closest('.email-input-group').find('.add-email').hide();
+                $(this).closest('.email-input-group').find('.remove-email').show();
+            });
+
+            $('#emailContainer').on('click', '.remove-email', function () {
+                $(this).closest('.email-input-group').remove();
+            });
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

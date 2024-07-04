@@ -1,0 +1,30 @@
+﻿@page
+@model SORS.Pages.ErrorlogModel
+@{
+    ViewData["Title"] = "Log";
+}
+
+<h1>Error log</h1>
+<label>
+    <input type="checkbox" id="autoRefresh" checked />
+    Auto-refresh
+</label>
+<hr>
+<div id="logContent">
+    <pre>@Html.Raw(Model.LogContent)</pre>
+</div>
+
+@section Scripts {
+    <script>
+       /* setTimeout(function () {
+            window.location.reload();
+        }, 5555);*/
+        function autoRefresh() {
+            if (document.getElementById('autoRefresh').checked) {
+                window.location.reload();
+            }
+        }
+
+        setInterval(autoRefresh, 5000);
+    </script>
+}

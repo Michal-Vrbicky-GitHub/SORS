@@ -1,0 +1,65 @@
+﻿@page
+@model SORS.Pages.ReportsModel
+@{
+    ViewData["Title"] = "Reporty";
+}
+
+<h2>Reports log</h2>
+<a asp-page="/LatestReports">Latest Reports</a><!-- class="d-inline"-->
+<br />
+<label>
+    <input type="checkbox" id="autoRefresh" /> <!--checked-->
+    Auto-refresh every 5 seconds
+</label>
+
+<form method="get">
+    <label for="fromDate">Od:</label>
+    <input type="datetime-local" id="fromDate" name="fromDate" value="@Model.FromDate?.ToString("yyyy-MM-ddTHH:mm")" />
+    <label for="toDate">Do:</label>
+    <input type="datetime-local" id="toDate" name="toDate" value="@Model.ToDate?.ToString("yyyy-MM-ddTHH:mm")" />
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Station ID</th>
+            <th>Name</th>
+            <th>Time</th>
+            <th>Value</th>
+            <th>Lvl Min</th>
+            <th>Lvl Max</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model.Reports.OrderBy(r => r.Value < r.LvlMin || r.Value > r.LvlMax ? 0 : 1))
+        {
+            <tr>
+                <td>
+                    <div style="width: 20px; height: 20px; background-color:
+                        @(report.Value < report.LvlMin ? "red" : report.Value > report.LvlMax ? "blue" : "green");">
+                    </div>
+                </td>
+                <td>@report.StationId</td>
+                <td>@report.StationName</td>
+                <td>@report.TimeStamp</td>
+                <td>@report.Value</td>
+                <td>@report.LvlMin</td>
+                <td>@report.LvlMax</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        function autoRefresh() {
+            if (document.getElementById('autoRefresh').checked) {
+                window.location.reload();
+            }
+        }
+
+        setInterval(autoRefresh, 5000);
+    </script>
+}

@@ -1,0 +1,119 @@
+﻿@page
+@model SORS.Pages.TokenManagementModel
+@{
+    ViewData["Title"] = "Token Management";
+}
+
+<h1>Token Management</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Token</th>
+            <th>Validity</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var userToken in Model.UserTokens)
+        {
+            <tr>
+                <td>@userToken.UserEmail</td>
+                <td>@(string.IsNullOrEmpty(userToken.Value) ? "–" : userToken.Value)</td>
+                <td>@(userToken.TokenExpiry?.ToString("yyyy-MM-dd") ?? "—")</td>
+                <td>
+                    <form method="post" asp-page-handler="GenerateToken" asp-route-userId="@userToken.UserId" class="d-inline">
+                        <button type="submit" class="btn btn-primary">Generate New Token</button>
+                    </form>
+					<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editTokenModal" data-userid="@userToken.UserId" data-email="@userToken.UserEmail" data-token="@userToken.Value">Edit Token</button>
+                    <form method="post" asp-page-handler="DeleteToken" asp-route-userId="@userToken.UserId" class="d-inline">
+                        <button type="submit" class="btn btn-danger">Delete Token</button>
+                    </form>                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Edit Token Modal -->
+<div class="modal fade" id="editTokenModal" tabindex="-1" aria-labelledby="editTokenModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTokenModalLabel">Edit Token</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editUserId" />
+                <div class="form-group">
+                    <label for="UID">UID:</label>
+                    <input type="text" id="UID" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label for="editToken">Token:</label>
+                    <input type="text" id="editToken" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="editExpiryDate">Token expiration:</label>
+                    <input type="date" id="editExpiryDate" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveTokenButton">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        var editTokenModal = document.getElementById('editTokenModal');
+        editTokenModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var userId = button.getAttribute('data-userid');
+            var email = button.getAttribute('data-email');
+            var token = button.getAttribute('data-token');
+            var modalTitle = editTokenModal.querySelector('.modal-title');
+            var UID = editTokenModal.querySelector('.modal-body input#UID');
+            var modalTokenInput = editTokenModal.querySelector('.modal-body input#editToken');
+            var modalUserIdInput = editTokenModal.querySelector('.modal-body input#editUserId');
+            var tokenExpiry = button.getAttribute('data-tokenexpiry');
+            var modalExpiryDateInput = editTokenModal.querySelector('.modal-body input#editExpiryDate');
+
+            modalTitle.textContent = 'Edit Token for ' + email;
+            UID.value = userId;
+            modalTokenInput.value = token || "";
+            modalExpiryDateInput.value = tokenExpiry || "";
+            modalUserIdInput.value = userId;
+        });
+
+        document.getElementById('saveTokenButton').addEventListener('click', function () {
+            var userId = document.getElementById('editUserId').value;
+            var token = document.getElementById('editToken').value;
+            var tokenExpiry = document.getElementById('editExpiryDate').value;
+
+
+            fetch('@Url.Page("/TokenManagement", "EditToken")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({ userId: userId, token: token, tokenExpiry: tokenExpiry })
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    response.text().then(text => {
+                        console.error('Error:', text);
+                    });
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+}
