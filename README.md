@@ -1,7 +1,7 @@
 # System Of River Stations
 ## Příkazy
 #### vytvoření databáze
-- Add-Migration SORS_DB -Context ApplicationDbContext
+- Add-Migration SORS_DB -Context ApplicationDbContext -OutputDir Data/Migrations
 - Update-Database -Verbose -Context ApplicationDbContext
 #### použité NuGet
 + Install-Package Microsoft.EntityFrameworkCore.SqlServer
@@ -28,5 +28,6 @@ Maily jsou za účelem testování zasílány na localhost:1025, lze změnit v a
 v grafu RiverComparison jsou data stanic na stejné řece – RiverName seskupena do jediného sloupce
 
 #
-Před spuštěním je nutno vytvořit databázi.
+Před spuštěním je nutno vytvořit databázi příkazy pro vytvoření databáze.
+
 
